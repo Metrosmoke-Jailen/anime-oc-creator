@@ -1,3 +1,11 @@
+export const genderOptions = [
+  "Male",
+  "Female",
+  "Non-binary",
+  "Other",
+  "Prefer not to say"
+];
+
 export const speciesOptions = [
   "Human",
   "Elf",
@@ -8,14 +16,6 @@ export const speciesOptions = [
   "Android",
   "Alien",
   "Custom"
-];
-
-export const genderOptions = [
-  "Male",
-  "Female",
-  "Non-binary",
-  "Other",
-  "Prefer not to say"
 ];
 
 export const roleOptions = [
@@ -40,7 +40,7 @@ export const personalityOptions = [
   "Playful"
 ];
 
-export const powerOptions = [
+export const powerTypeOptions = [
   "Magic",
   "Ki",
   "Nen",
