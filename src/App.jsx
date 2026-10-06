@@ -455,23 +455,21 @@ function App() {
   };
 
   const completionCount =
-    [
-      character.name.trim(),
-      character.age,
-      character.gender,
-      character.species,
-      character.role,
-      character.personality.length >=
-        3,
-      character.powerType,
-      character.powerName.trim(),
-      character.powerDescription.trim()
-    ].filter(Boolean).length;
+  [
+    character.name.trim(),
+    character.age,
+    character.gender,
+    character.species,
+    character.personality.length >= 3,
+    character.powerType,
+    character.powerName.trim(),
+    character.powerDescription.trim()
+  ].filter(Boolean).length;
 
-  const completionPercentage =
-    Math.round(
-      (completionCount / 9) * 100
-    );
+const completionPercentage =
+  Math.round(
+    (completionCount / 8) * 100
+  );
 
   return (
     <>

@@ -1,7 +1,3 @@
-/* =========================================
-   GLOBAL RESET
-========================================= */
-
 * {
   box-sizing: border-box;
 }
@@ -18,40 +14,50 @@ body {
   min-height: 100vh;
 
   font-family:
-    Arial,
-    Helvetica,
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
+
+  color: #ffffff;
 
   background:
     radial-gradient(
-      circle at top,
-      #211a35 0%,
-      #0d0b14 42%
+      circle at 50% -10%,
+      #2a2042 0%,
+      #120e1c 35%,
+      #0b0912 75%
     );
-
-  color: #ffffff;
 
   line-height: 1.5;
 
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
   text-rendering: optimizeLegibility;
 }
 
+body::before {
+  content: "";
 
-/* =========================================
-   ROOT
-========================================= */
+  position: fixed;
+  inset: 0;
 
-#root {
-  min-height: 100vh;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 10% 20%,
+      rgba(139, 92, 246, 0.04),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 90% 70%,
+      rgba(109, 40, 217, 0.04),
+      transparent 25%
+    );
 }
-
-
-/* =========================================
-   ELEMENT DEFAULTS
-========================================= */
 
 button,
 input,
@@ -69,29 +75,22 @@ button:disabled {
 }
 
 img {
-  display: block;
   max-width: 100%;
+  display: block;
 }
 
 a {
   color: inherit;
-  text-decoration: none;
 }
 
-
-/* =========================================
-   TEXT SELECTION
-========================================= */
+#root {
+  min-height: 100vh;
+}
 
 ::selection {
+  color: white;
   background: #7c3aed;
-  color: #ffffff;
 }
-
-
-/* =========================================
-   FOCUS ACCESSIBILITY
-========================================= */
 
 a:focus-visible,
 button:focus-visible,
@@ -101,31 +100,6 @@ textarea:focus-visible {
   outline: 3px solid #c4b5fd;
   outline-offset: 3px;
 }
-
-
-/* =========================================
-   FORM NORMALIZATION
-========================================= */
-
-input,
-select,
-textarea {
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-textarea {
-  overflow: auto;
-}
-
-select {
-  cursor: pointer;
-}
-
-
-/* =========================================
-   REDUCED MOTION
-========================================= */
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -139,20 +113,5 @@ select {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-
-/* =========================================
-   MOBILE SAFETY
-========================================= */
-
-@media (max-width: 640px) {
-  html {
-    overflow-x: hidden;
-  }
-
-  body {
-    overflow-x: hidden;
   }
 }
