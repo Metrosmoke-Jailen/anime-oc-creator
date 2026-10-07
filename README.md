@@ -4,7 +4,7 @@ A responsive React app that lets users create their own original anime character
 
 ## 🔗 Live Site
 
-**Live URL:** [[Add your deployed URL here]](https://anime-oc-creator.vercel.app)
+**Live URL:** (https://anime-oc-creator.vercel.app)
 
 ## ✨ Features
 
