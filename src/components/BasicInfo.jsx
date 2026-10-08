@@ -11,31 +11,37 @@ function BasicInfo({
 }) {
   return (
     <section
-      className="creator-step"
+      className="p-5 sm:p-7 md:p-8"
       aria-labelledby="basic-info-heading"
     >
-      <div className="step-heading">
-        <p className="eyebrow">
-          STEP 01
+      <div className="mb-8">
+        <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.16em] text-violet-300">
+          Step 01
         </p>
 
-        <h2 id="basic-info-heading">
+        <h2
+          id="basic-info-heading"
+          className="text-2xl font-black tracking-tight text-white sm:text-3xl"
+        >
           Basic Information
         </h2>
 
-        <p>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#b8b2c8] sm:text-base">
           Start by defining the basic
           identity of your character.
         </p>
       </div>
 
-      <div className="character-form">
-        {/* Character Name */}
-        <div className="form-group">
-          <label htmlFor="name">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {/* Name */}
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="name"
+            className="text-sm font-bold text-white"
+          >
             Character Name
             <span
-              className="required"
+              className="ml-1 text-red-400"
               aria-hidden="true"
             >
               *
@@ -57,6 +63,7 @@ function BasicInfo({
             maxLength={40}
             autoComplete="name"
             required
+            className="min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.035] px-4 text-sm text-white placeholder:text-[#817a91] outline-none transition focus:border-violet-400/60 focus:bg-violet-500/[0.04] focus:ring-2 focus:ring-violet-400/20"
             aria-describedby={
               errors.name
                 ? "name-error"
@@ -69,7 +76,10 @@ function BasicInfo({
             }
           />
 
-          <small id="name-help">
+          <small
+            id="name-help"
+            className="text-xs text-[#817a91]"
+          >
             {character.name.length}/40
             characters
           </small>
@@ -77,7 +87,7 @@ function BasicInfo({
           {errors.name && (
             <p
               id="name-error"
-              className="form-error"
+              className="text-sm font-medium text-red-400"
               role="alert"
             >
               {errors.name}
@@ -86,11 +96,14 @@ function BasicInfo({
         </div>
 
         {/* Age */}
-        <div className="form-group">
-          <label htmlFor="age">
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="age"
+            className="text-sm font-bold text-white"
+          >
             Age
             <span
-              className="required"
+              className="ml-1 text-red-400"
               aria-hidden="true"
             >
               *
@@ -112,6 +125,7 @@ function BasicInfo({
             }
             placeholder="19"
             required
+            className="min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.035] px-4 text-sm text-white placeholder:text-[#817a91] outline-none transition focus:border-violet-400/60 focus:bg-violet-500/[0.04] focus:ring-2 focus:ring-violet-400/20"
             aria-describedby={
               errors.age
                 ? "age-error"
@@ -127,7 +141,7 @@ function BasicInfo({
           {errors.age && (
             <p
               id="age-error"
-              className="form-error"
+              className="text-sm font-medium text-red-400"
               role="alert"
             >
               {errors.age}
@@ -136,11 +150,14 @@ function BasicInfo({
         </div>
 
         {/* Gender */}
-        <div className="form-group">
-          <label htmlFor="gender">
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="gender"
+            className="text-sm font-bold text-white"
+          >
             Gender
             <span
-              className="required"
+              className="ml-1 text-red-400"
               aria-hidden="true"
             >
               *
@@ -158,6 +175,7 @@ function BasicInfo({
               )
             }
             required
+            className="min-h-12 w-full rounded-xl border border-white/10 bg-[#171322] px-4 text-sm text-white outline-none transition focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/20"
             aria-describedby={
               errors.gender
                 ? "gender-error"
@@ -188,7 +206,7 @@ function BasicInfo({
           {errors.gender && (
             <p
               id="gender-error"
-              className="form-error"
+              className="text-sm font-medium text-red-400"
               role="alert"
             >
               {errors.gender}
@@ -197,11 +215,14 @@ function BasicInfo({
         </div>
 
         {/* Species */}
-        <div className="form-group">
-          <label htmlFor="species">
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="species"
+            className="text-sm font-bold text-white"
+          >
             Species
             <span
-              className="required"
+              className="ml-1 text-red-400"
               aria-hidden="true"
             >
               *
@@ -219,6 +240,7 @@ function BasicInfo({
               )
             }
             required
+            className="min-h-12 w-full rounded-xl border border-white/10 bg-[#171322] px-4 text-sm text-white outline-none transition focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/20"
             aria-describedby={
               errors.species
                 ? "species-error"
@@ -249,7 +271,7 @@ function BasicInfo({
           {errors.species && (
             <p
               id="species-error"
-              className="form-error"
+              className="text-sm font-medium text-red-400"
               role="alert"
             >
               {errors.species}
@@ -257,9 +279,12 @@ function BasicInfo({
           )}
         </div>
 
-        {/* Character Role */}
-        <div className="form-group form-group-full">
-          <label htmlFor="role">
+        {/* Role */}
+        <div className="flex flex-col gap-2 md:col-span-2">
+          <label
+            htmlFor="role"
+            className="text-sm font-bold text-white"
+          >
             Character Role
           </label>
 
@@ -273,6 +298,7 @@ function BasicInfo({
                 event.target.value
               )
             }
+            className="min-h-12 w-full rounded-xl border border-white/10 bg-[#171322] px-4 text-sm text-white outline-none transition focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/20"
           >
             <option value="">
               Select a role

@@ -28,15 +28,83 @@ const initialCharacter = {
   powerDescription: ""
 };
 
+const randomNames = [
+  "Kael Vanth",
+  "Aeris Nocturne",
+  "Riven Kuro",
+  "Liora Veyne",
+  "Ren Ashvale",
+  "Sora Nightfall",
+  "Aiden Cross",
+  "Mira Valen",
+  "Lucian Veyre",
+  "Akira Kurogane",
+  "Rai Vex",
+  "Seraphina Vale",
+  "Darius Crowe",
+  "Nyx Arclight",
+  "Cassian Noir",
+  "Elara Voss",
+  "Zane Evernight",
+  "Lyra Solenne",
+  "Orion Draven",
+  "Kaien Shiro",
+  "Reina Astra",
+  "Veyra Lunaris",
+  "Ronan Blackwell",
+  "Astra Veyne",
+  "Kieran Ash",
+  "Selene Noctis",
+  "Dante Ravencroft",
+  "Aria Nightshade",
+  "Zephyr Vale",
+  "Elias Storm"
+];
+
+const randomPowerNames = [
+  "Shadow Dominion",
+  "Astral Rupture",
+  "Void Pulse",
+  "Eclipse Drive",
+  "Crimson Resonance",
+  "Celestial Breaker",
+  "Phantom Arsenal",
+  "Infinite Flame",
+  "Abyssal Crown",
+  "Heaven's Judgment",
+  "Voidwalker",
+  "Soul Requiem",
+  "Dragon's Wrath",
+  "Starfall Genesis",
+  "Reality Breaker",
+  "Temporal Collapse",
+  "Chaos Manifest",
+  "Eternal Frost",
+  "Divine Thunder",
+  "Blood Moon",
+  "Phantom Step",
+  "World Ender",
+  "Astral Dominion",
+  "Nightmare Engine",
+  "Celestial Ruin",
+  "Infinite Edge",
+  "Black Sun",
+  "Heavenly Spear",
+  "Void Genesis",
+  "Eternal Eclipse"
+];
+
 function getSavedCharacter() {
   try {
-    const saved =
-      localStorage.getItem(
-        "animeOCCharacter"
-      );
+    const saved = localStorage.getItem(
+      "animeOCCharacter"
+    );
 
     if (!saved) {
-      return initialCharacter;
+      return {
+        ...initialCharacter,
+        personality: []
+      };
     }
 
     const parsed = JSON.parse(saved);
@@ -51,16 +119,18 @@ function getSavedCharacter() {
         : []
     };
   } catch {
-    return initialCharacter;
+    return {
+      ...initialCharacter,
+      personality: []
+    };
   }
 }
 
 function getSavedStep() {
   try {
-    const saved =
-      localStorage.getItem(
-        "animeOCCurrentStep"
-      );
+    const saved = localStorage.getItem(
+      "animeOCCurrentStep"
+    );
 
     const step = Number(saved);
 
@@ -106,6 +176,9 @@ function App() {
   const [isSaved, setIsSaved] =
     useState(false);
 
+  /*
+   * Save character progress.
+   */
   useEffect(() => {
     try {
       localStorage.setItem(
@@ -117,15 +190,19 @@ function App() {
 
       const timeout = setTimeout(() => {
         setIsSaved(false);
-      }, 1200);
+      }, 1600);
 
-      return () =>
+      return () => {
         clearTimeout(timeout);
+      };
     } catch {
       setIsSaved(false);
     }
   }, [character]);
 
+  /*
+   * Save current step.
+   */
   useEffect(() => {
     try {
       localStorage.setItem(
@@ -137,6 +214,9 @@ function App() {
     }
   }, [currentStep]);
 
+  /*
+   * Save generated state.
+   */
   useEffect(() => {
     try {
       localStorage.setItem(
@@ -239,31 +319,37 @@ function App() {
     );
   };
 
-  const generateCharacter = () => {
-    setIsGenerated(true);
-    setErrors({});
-
+  const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth"
     });
   };
 
+  const generateCharacter = () => {
+    setIsGenerated(true);
+    setErrors({});
+    scrollToTop();
+  };
+
   const handleNext = () => {
     if (currentStep === 1) {
       if (!validateBasicInfo()) {
+        scrollToTop();
         return;
       }
     }
 
     if (currentStep === 2) {
       if (!validatePersonality()) {
+        scrollToTop();
         return;
       }
     }
 
     if (currentStep === 3) {
       if (!validatePower()) {
+        scrollToTop();
         return;
       }
     }
@@ -278,11 +364,7 @@ function App() {
     );
 
     setErrors({});
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
+    scrollToTop();
   };
 
   const handleBack = () => {
@@ -291,13 +373,13 @@ function App() {
     );
 
     setErrors({});
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
+    scrollToTop();
   };
 
+  /*
+   * Allows navigation only to
+   * completed/current steps.
+   */
   const goToStep = (step) => {
     if (
       step < 1 ||
@@ -313,11 +395,7 @@ function App() {
 
     setCurrentStep(step);
     setErrors({});
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
+    scrollToTop();
   };
 
   const resetCharacter = () => {
@@ -345,11 +423,9 @@ function App() {
     setCurrentStep(1);
     setErrors({});
     setIsGenerated(false);
+    setIsSaved(false);
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
+    scrollToTop();
   };
 
   const randomItem = (array) => {
@@ -374,31 +450,35 @@ function App() {
     );
   };
 
-  const randomizeCharacter = () => {
-    const randomNames = [
-      "Kael Vanth",
-      "Aeris Nocturne",
-      "Riven Kuro",
-      "Liora Veyne",
-      "Ren Ashvale",
-      "Sora Nightfall",
-      "Aiden Cross",
-      "Mira Valen"
-    ];
+  const hasCharacterProgress =
+    Boolean(
+      character.name.trim() ||
+        character.age ||
+        character.gender ||
+        character.species ||
+        character.role ||
+        character.personality.length ||
+        character.powerType ||
+        character.powerName.trim() ||
+        character.powerDescription.trim()
+    );
 
-    const randomPowerNames = [
-      "Shadow Dominion",
-      "Astral Rupture",
-      "Void Pulse",
-      "Eclipse Drive",
-      "Crimson Resonance",
-      "Celestial Breaker",
-      "Phantom Arsenal",
-      "Infinite Flame"
-    ];
+  const randomizeCharacter = () => {
+    if (hasCharacterProgress) {
+      const confirmed =
+        window.confirm(
+          "Randomizing will replace your current character. Your saved character will be overwritten. Continue?"
+        );
+
+      if (!confirmed) {
+        return;
+      }
+    }
 
     const newCharacter = {
-      name: randomItem(randomNames),
+      name: randomItem(
+        randomNames
+      ),
 
       age: String(
         Math.floor(
@@ -410,31 +490,26 @@ function App() {
         genderOptions.slice(0, 2)
       ),
 
-      species:
-        randomItem(
-          speciesOptions
-        ),
+      species: randomItem(
+        speciesOptions
+      ),
 
-      role:
-        randomItem(
-          roleOptions
-        ),
+      role: randomItem(
+        roleOptions
+      ),
 
-      personality:
-        randomItems(
-          personalityOptions,
-          3
-        ),
+      personality: randomItems(
+        personalityOptions,
+        3
+      ),
 
-      powerType:
-        randomItem(
-          powerTypeOptions
-        ),
+      powerType: randomItem(
+        powerTypeOptions
+      ),
 
-      powerName:
-        randomItem(
-          randomPowerNames
-        ),
+      powerName: randomItem(
+        randomPowerNames
+      ),
 
       powerDescription:
         "The user channels their energy through a unique supernatural ability, creating powerful offensive and defensive techniques that adapt to the situation."
@@ -448,51 +523,54 @@ function App() {
     setErrors({});
     setIsGenerated(false);
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
+    scrollToTop();
   };
 
+  /*
+   * Eight required completion criteria.
+   */
   const completionCount =
-  [
-    character.name.trim(),
-    character.age,
-    character.gender,
-    character.species,
-    character.personality.length >= 3,
-    character.powerType,
-    character.powerName.trim(),
-    character.powerDescription.trim()
-  ].filter(Boolean).length;
+    [
+      character.name.trim(),
+      character.age,
+      character.gender,
+      character.species,
+      character.personality.length >= 3,
+      character.powerType,
+      character.powerName.trim(),
+      character.powerDescription.trim()
+    ].filter(Boolean).length;
 
-const completionPercentage =
-  Math.round(
-    (completionCount / 8) * 100
-  );
+  const completionPercentage =
+    Math.round(
+      (completionCount / 8) * 100
+    );
 
   return (
-    <>
+    <div className="min-h-screen">
       <Header />
 
       <main
         id="creator"
-        className="creator-page"
+        className="mx-auto w-full max-w-7xl px-4 pb-12 sm:px-6 lg:px-8"
       >
         {!isGenerated ? (
           <>
-            <section className="creator-intro">
-              <div className="creator-intro-content">
-                <p className="eyebrow">
+            {/* =========================
+                INTRO
+            ========================== */}
+            <section className="flex flex-col gap-6 py-8 md:flex-row md:items-end md:justify-between md:gap-12 lg:py-10">
+              <div className="min-w-0 max-w-3xl">
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-purple-300">
                   ANIME OC CREATOR
                 </p>
 
-                <h1>
+                <h1 className="mt-2 text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
                   Create Your Original
                   Character
                 </h1>
 
-                <p>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-white/55 sm:text-base sm:leading-7">
                   Build your character
                   from the ground up.
                   Define their identity,
@@ -501,64 +579,114 @@ const completionPercentage =
                 </p>
               </div>
 
-              <div className="creator-tools">
+              {/* =========================
+                  CREATOR TOOLS
+              ========================== */}
+              <div className="w-full shrink-0 md:w-auto">
                 <button
                   type="button"
-                  className="secondary-button"
                   onClick={
                     randomizeCharacter
                   }
+                  aria-label="Randomize character"
+                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-purple-400/25 bg-purple-500/10 px-5 text-sm font-bold text-purple-100 shadow-lg shadow-purple-950/20 transition-all duration-200 hover:border-purple-400/50 hover:bg-purple-500/20 hover:text-white hover:shadow-purple-900/30 focus-visible:outline-3 focus-visible:outline-purple-300 focus-visible:outline-offset-2 active:scale-[0.98] md:w-auto"
                 >
-                  🎲 Randomize
+                  <span aria-hidden="true">
+                    🎲
+                  </span>
+
+                  Randomize Character
                 </button>
 
+                <p className="mt-2 text-center text-xs text-white/35 md:text-right">
+                  Generates a completely
+                  new character.
+                </p>
+
                 {isSaved && (
-                  <span
-                    className="save-status"
+                  <div
+                    className="mt-3 flex min-h-11 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-4 text-sm font-semibold text-emerald-300"
                     role="status"
                     aria-live="polite"
                   >
-                    ✓ Saved
-                  </span>
+                    ✓ Progress saved
+                  </div>
                 )}
               </div>
             </section>
 
+            {/* =========================
+                CHARACTER PROGRESS
+            ========================== */}
             <section
-              className="completion-card"
+              className="mb-8 rounded-2xl border border-white/10 bg-white/[0.025] p-4 shadow-xl shadow-black/10 sm:p-5"
               aria-label="Character completion"
             >
-              <div className="completion-header">
-                <span>
-                  Character Progress
-                </span>
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-purple-300">
+                    Character Progress
+                  </p>
 
-                <strong>
-                  {completionPercentage}%
+                  <p className="mt-1 text-sm leading-6 text-white/50">
+                    {completionPercentage ===
+                    100
+                      ? "Your character is ready."
+                      : "Complete each section to finish your character."}
+                  </p>
+                </div>
+
+                <strong className="text-2xl font-black text-white sm:text-3xl">
+                  {
+                    completionPercentage
+                  }
+                  %
                 </strong>
               </div>
 
               <div
-                className="completion-track"
-                aria-hidden="true"
+                className="mt-4 h-2 overflow-hidden rounded-full bg-white/10"
+                role="progressbar"
+                aria-valuenow={
+                  completionPercentage
+                }
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-label={`Character completion: ${completionPercentage}%`}
               >
                 <div
-                  className="completion-fill"
+                  className="h-full rounded-full bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-400 transition-all duration-500"
                   style={{
                     width: `${completionPercentage}%`
                   }}
                 />
               </div>
+
+              <p className="mt-3 text-xs text-white/35">
+                {
+                  completionCount
+                }{" "}
+                of 8 required items
+                completed
+              </p>
             </section>
 
-            <ProgressBar
-              currentStep={
-                currentStep
-              }
-              goToStep={goToStep}
-            />
+            {/* =========================
+                STEP PROGRESS
+            ========================== */}
+            <div className="mx-auto w-full max-w-6xl">
+              <ProgressBar
+                currentStep={
+                  currentStep
+                }
+                goToStep={goToStep}
+              />
+            </div>
 
-            <section className="creator-container">
+            {/* =========================
+                CREATOR CONTENT
+            ========================== */}
+            <section className="mx-auto mt-8 w-full max-w-5xl sm:mt-10">
               {currentStep === 1 && (
                 <BasicInfo
                   character={
@@ -600,32 +728,52 @@ const completionPercentage =
                   character={
                     character
                   }
+                  onEdit={goToStep}
                 />
               )}
 
-              <div className="step-navigation">
+              {/* =========================
+                  STEP NAVIGATION
+              ========================== */}
+              <div
+                className={`
+                  mt-8
+                  flex
+                  gap-3
+                  border-t
+                  border-white/10
+                  pt-6
+                  ${
+                    currentStep > 1
+                      ? "flex-col-reverse sm:flex-row sm:items-center sm:justify-between"
+                      : "flex-col sm:items-end"
+                  }
+                `}
+              >
                 {currentStep > 1 && (
                   <button
                     type="button"
-                    className="secondary-button"
                     onClick={
                       handleBack
                     }
+                    className="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-5 text-sm font-bold text-white/70 transition-all duration-200 hover:border-white/20 hover:bg-white/[0.07] hover:text-white focus-visible:outline-3 focus-visible:outline-purple-300 focus-visible:outline-offset-2 sm:w-auto"
                   >
-                    Back
+                    ← Back
                   </button>
                 )}
 
                 <button
                   type="button"
-                  className="primary-button"
                   onClick={
                     handleNext
                   }
+                  className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-violet-500 px-6 text-sm font-black text-white shadow-lg shadow-purple-950/30 transition-all duration-200 hover:from-purple-500 hover:to-violet-400 hover:shadow-purple-900/40 focus-visible:outline-3 focus-visible:outline-purple-300 focus-visible:outline-offset-2 active:scale-[0.98] sm:w-auto"
                 >
                   {currentStep === 4
-                    ? "Generate Character"
-                    : "Continue"}
+                    ? "⚡ Generate Character"
+                    : currentStep === 3
+                      ? "Review →"
+                      : "Continue →"}
                 </button>
               </div>
             </section>
@@ -639,7 +787,7 @@ const completionPercentage =
           />
         )}
       </main>
-    </>
+    </div>
   );
 }
 

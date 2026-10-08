@@ -1,4 +1,6 @@
-import { powerTypeOptions } from "../data/options";
+import {
+  powerTypeOptions
+} from "../data/options";
 
 function Power({
   character,
@@ -7,32 +9,38 @@ function Power({
 }) {
   return (
     <section
-      className="creator-step"
+      className="p-5 sm:p-7 md:p-8"
       aria-labelledby="power-heading"
     >
-      <div className="step-heading">
-        <p className="eyebrow">
-          STEP 03
+      <div className="mb-8">
+        <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.16em] text-violet-300">
+          Step 03
         </p>
 
-        <h2 id="power-heading">
+        <h2
+          id="power-heading"
+          className="text-2xl font-black tracking-tight text-white sm:text-3xl"
+        >
           Power
         </h2>
 
-        <p>
+        <p className="mt-2 text-sm leading-6 text-[#b8b2c8] sm:text-base">
           Give your character a unique
           ability and define how their
           power works.
         </p>
       </div>
 
-      <div className="character-form">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* Power Type */}
-        <div className="form-group">
-          <label htmlFor="powerType">
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="powerType"
+            className="text-sm font-bold text-white"
+          >
             Power Type
             <span
-              className="required"
+              className="ml-1 text-red-400"
               aria-hidden="true"
             >
               *
@@ -42,7 +50,9 @@ function Power({
           <select
             id="powerType"
             name="powerType"
-            value={character.powerType}
+            value={
+              character.powerType
+            }
             onChange={(event) =>
               updateCharacter(
                 "powerType",
@@ -50,6 +60,7 @@ function Power({
               )
             }
             required
+            className="min-h-12 w-full rounded-xl border border-white/10 bg-[#171322] px-4 text-sm text-white outline-none transition focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/20"
             aria-describedby={
               errors.powerType
                 ? "powerType-error"
@@ -80,7 +91,7 @@ function Power({
           {errors.powerType && (
             <p
               id="powerType-error"
-              className="form-error"
+              className="text-sm font-medium text-red-400"
               role="alert"
             >
               {errors.powerType}
@@ -89,11 +100,14 @@ function Power({
         </div>
 
         {/* Ability Name */}
-        <div className="form-group">
-          <label htmlFor="powerName">
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="powerName"
+            className="text-sm font-bold text-white"
+          >
             Ability Name
             <span
-              className="required"
+              className="ml-1 text-red-400"
               aria-hidden="true"
             >
               *
@@ -104,7 +118,9 @@ function Power({
             id="powerName"
             name="powerName"
             type="text"
-            value={character.powerName}
+            value={
+              character.powerName
+            }
             onChange={(event) =>
               updateCharacter(
                 "powerName",
@@ -114,6 +130,7 @@ function Power({
             placeholder="Example: Shadow Dominion"
             maxLength={60}
             required
+            className="min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.035] px-4 text-sm text-white placeholder:text-[#817a91] outline-none transition focus:border-violet-400/60 focus:bg-violet-500/[0.04] focus:ring-2 focus:ring-violet-400/20"
             aria-describedby={
               errors.powerName
                 ? "powerName-error"
@@ -126,15 +143,21 @@ function Power({
             }
           />
 
-          <small id="powerName-help">
-            {character.powerName.length}/60
-            characters
+          <small
+            id="powerName-help"
+            className="text-xs text-[#817a91]"
+          >
+            {
+              character.powerName
+                .length
+            }
+            /60 characters
           </small>
 
           {errors.powerName && (
             <p
               id="powerName-error"
-              className="form-error"
+              className="text-sm font-medium text-red-400"
               role="alert"
             >
               {errors.powerName}
@@ -142,12 +165,15 @@ function Power({
           )}
         </div>
 
-        {/* Ability Description */}
-        <div className="form-group form-group-full">
-          <label htmlFor="powerDescription">
+        {/* Description */}
+        <div className="flex flex-col gap-2 md:col-span-2">
+          <label
+            htmlFor="powerDescription"
+            className="text-sm font-bold text-white"
+          >
             Ability Description
             <span
-              className="required"
+              className="ml-1 text-red-400"
               aria-hidden="true"
             >
               *
@@ -170,6 +196,7 @@ function Power({
             rows="7"
             maxLength={500}
             required
+            className="min-h-40 w-full resize-y rounded-xl border border-white/10 bg-white/[0.035] px-4 py-3 text-sm leading-6 text-white placeholder:text-[#817a91] outline-none transition focus:border-violet-400/60 focus:bg-violet-500/[0.04] focus:ring-2 focus:ring-violet-400/20"
             aria-describedby={
               errors.powerDescription
                 ? "powerDescription-error"
@@ -184,10 +211,12 @@ function Power({
 
           <small
             id="powerDescription-help"
+            className="text-xs text-[#817a91]"
             aria-live="polite"
           >
             {
-              character.powerDescription
+              character
+                .powerDescription
                 .length
             }
             /500 characters
@@ -196,10 +225,12 @@ function Power({
           {errors.powerDescription && (
             <p
               id="powerDescription-error"
-              className="form-error"
+              className="text-sm font-medium text-red-400"
               role="alert"
             >
-              {errors.powerDescription}
+              {
+                errors.powerDescription
+              }
             </p>
           )}
         </div>
