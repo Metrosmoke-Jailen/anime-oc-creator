@@ -170,3 +170,328 @@ export const powerTypeOptions = [
   "Energy Manipulation",
   "Custom"
 ];
+
+
+
+export const appearanceOptions = {
+  hairColorOptions: [
+    "Black",
+    "White",
+    "Silver",
+    "Gray",
+    "Brown",
+    "Blonde",
+    "Platinum Blonde",
+    "Red",
+    "Crimson",
+    "Pink",
+    "Purple",
+    "Blue",
+    "Cyan",
+    "Green",
+    "Teal",
+    "Orange",
+    "Golden",
+    "Rainbow",
+    "Two-Tone",
+    "Custom"
+  ],
+
+  hairStyleOptions: [
+    "Short and Spiky",
+    "Long and Flowing",
+    "Messy",
+    "Straight",
+    "Wavy",
+    "Curly",
+    "Ponytail",
+    "Twin Tails",
+    "Braided",
+    "Undercut",
+    "Wolf Cut",
+    "Layered",
+    "Bun",
+    "Side-Swept",
+    "Wild and Untamed",
+    "Slicked Back",
+    "Shoulder-Length",
+    "Asymmetrical",
+    "Custom"
+  ],
+
+  eyeColorOptions: [
+    "Black",
+    "Brown",
+    "Amber",
+    "Red",
+    "Crimson",
+    "Orange",
+    "Yellow",
+    "Gold",
+    "Green",
+    "Emerald",
+    "Blue",
+    "Ice Blue",
+    "Cyan",
+    "Purple",
+    "Violet",
+    "Pink",
+    "Silver",
+    "White",
+    "Heterochromia",
+    "Glowing",
+    "Custom"
+  ],
+
+  eyeStyleOptions: [
+    "Sharp",
+    "Narrow",
+    "Round",
+    "Gentle",
+    "Piercing",
+    "Sleepy",
+    "Slit Pupils",
+    "Cat-Like",
+    "Demonic",
+    "Angelic",
+    "Glowing",
+    "Patterned Irises",
+    "Star-Shaped Pupils",
+    "Custom"
+  ],
+
+  skinToneOptions: [
+    "Very Fair",
+    "Fair",
+    "Light",
+    "Medium",
+    "Olive",
+    "Tan",
+    "Brown",
+    "Dark Brown",
+    "Deep",
+    "Pale",
+    "Porcelain",
+    "Blue",
+    "Red",
+    "Gray",
+    "Purple",
+    "Green",
+    "Fantasy / Custom"
+  ],
+
+  heightOptions: [
+    "Very Short",
+    "Short",
+    "Below Average",
+    "Average",
+    "Above Average",
+    "Tall",
+    "Very Tall",
+    "Towering",
+    "Custom"
+  ],
+
+  buildOptions: [
+    "Slim",
+    "Lean and Athletic",
+    "Toned",
+    "Muscular",
+    "Heavily Muscular",
+    "Petite",
+    "Average",
+    "Curvy",
+    "Broad-Shouldered",
+    "Lanky",
+    "Stocky",
+    "Graceful",
+    "Other"
+  ],
+
+  outfitOptions: [
+    "School Uniform",
+    "Casual Streetwear",
+    "Dark Academia",
+    "Fantasy Armor",
+    "Knight Armor",
+    "Ninja Attire",
+    "Shinobi Outfit",
+    "Kimono",
+    "Modern Suit",
+    "Long Coat",
+    "Hooded Cloak",
+    "Battle Outfit",
+    "Cyberpunk Fashion",
+    "Gothic Attire",
+    "Royal Clothing",
+    "Priest / Cleric Robes",
+    "Military Uniform",
+    "Traditional Martial Arts Gi",
+    "Techwear",
+    "Robe and Sash",
+    "Custom"
+  ],
+
+  accessoryOptions: [
+    "None",
+    "Glasses",
+    "Sunglasses",
+    "Earrings",
+    "Piercings",
+    "Necklace",
+    "Choker",
+    "Scarf",
+    "Gloves",
+    "Rings",
+    "Hair Clips",
+    "Headband",
+    "Mask",
+    "Eye Patch",
+    "Horns",
+    "Halo",
+    "Wings",
+    "Cape",
+    "Shoulder Armor",
+    "Headphones",
+    "Custom"
+  ],
+
+  aestheticOptions: [
+    "Classic Shonen",
+    "Dark Fantasy",
+    "High Fantasy",
+    "Gothic",
+    "Cyberpunk",
+    "Steampunk",
+    "Modern Urban",
+    "Traditional Japanese",
+    "Celestial",
+    "Demonic",
+    "Angelic",
+    "Eldritch",
+    "Cute / Kawaii",
+    "Elegant",
+    "Minimalist",
+    "Streetwear",
+    "Post-Apocalyptic",
+    "Military",
+    "Mecha",
+    "Vampiric",
+    "Custom"
+  ]
+};
+
+export const weaponsOptions = {
+  weaponTypeOptions: [
+    "None", "Sword", "Katana", "Greatsword", "Dual Blades",
+    "Dagger", "Twin Daggers", "Scythe", "Spear", "Lance",
+    "Trident", "Polearm", "Staff", "Wand", "Bow", "Crossbow",
+    "Gun", "Dual Pistols", "Rifle", "Shotgun", "Gauntlets",
+    "Claws", "Knuckles", "Whip", "Chains", "Chain Scythe",
+    "Shield", "Warhammer", "Battle Axe", "Dual Axes", "Great Axe",
+    "Halberd", "Rapier", "Longsword", "Shortsword",
+    "Throwing Knives", "Cards", "Book / Grimoire",
+    "Musical Instrument", "Summoned Weapon", "Living Weapon",
+    "Transforming Weapon", "Firearm", "Mechanical Weapon",
+    "Custom Weapon"
+  ],
+
+  combatStyleOptions: [
+    "Unarmed Combat", "Martial Arts", "Swordsmanship",
+    "Dual Wielding", "Heavy Weapon Combat",
+    "Fast and Precise Strikes", "Defensive Counterattacks",
+    "Aggressive Offense", "Berserker Combat", "Fencing",
+    "Assassination", "Stealth Combat", "Ranged Combat",
+    "Sniping", "Gun Fu", "Magic-Infused Combat",
+    "Elemental Combat", "Weapon Throwing", "Acrobatic Combat",
+    "Grappling", "Tactical Combat", "Improvised Weaponry",
+    "Adaptive Combat", "Custom"
+  ],
+
+  weaponOriginOptions: [
+    "Personally Forged", "Blacksmith-Crafted", "Inherited",
+    "Family Heirloom", "Ancient Artifact", "Divine Creation",
+    "Demonic Creation", "Celestial Origin", "Cursed Relic",
+    "Magically Summoned", "Spirit-Bound", "Soul-Bound",
+    "Living Entity", "Ancient Civilization", "Lost Technology",
+    "Advanced Technology", "Military-Issued", "Stolen",
+    "Discovered", "Gifted", "Unknown Origin", "Custom"
+  ],
+
+  weaponRarityOptions: [
+    "Common", "Uncommon", "Rare", "Epic", "Legendary",
+    "Mythical", "Ancient", "Relic", "Divine", "Demonic",
+    "Celestial", "Transcendent", "Unique", "One of a Kind",
+    "Unranked"
+  ],
+
+  weaponAbilityOptions: [
+    "None", "Elemental Manipulation", "Fire Generation",
+    "Ice Generation", "Lightning Generation", "Wind Manipulation",
+    "Earth Manipulation", "Light Manipulation",
+    "Darkness Manipulation", "Energy Projection", "Soul Absorption",
+    "Life Drain", "Mana Absorption", "Regeneration",
+    "Barrier Generation", "Spatial Distortion", "Dimensional Cutting",
+    "Reality Manipulation", "Time Manipulation",
+    "Gravity Manipulation", "Sealing", "Purification",
+    "Corruption", "Weapon Summoning", "Weapon Transformation",
+    "Sentience", "Power Amplification", "Unbreakable Durability",
+    "Adaptive Evolution", "Custom Ability"
+  ]
+};
+
+export const accessoryOptions = {
+  accessoryTypeOptions: [
+    "None", "Necklace", "Pendant", "Amulet", "Choker", "Ring",
+    "Signet Ring", "Earrings", "Ear Cuffs", "Piercings",
+    "Bracelet", "Wristband", "Watch", "Gloves", "Armlets",
+    "Anklets", "Belt", "Sash", "Scarf", "Tie", "Ribbon",
+    "Hair Clips", "Hairpin", "Headband", "Crown", "Tiara",
+    "Circlet", "Mask", "Half Mask", "Full Face Mask",
+    "Eye Patch", "Glasses", "Sunglasses", "Goggles", "Hood",
+    "Cape", "Cloak", "Mantle", "Shoulder Ornament", "Brooch",
+    "Badge", "Medal", "Charm", "Talisman", "Prayer Beads",
+    "Rosary", "Holy Symbol", "Horns", "Halo", "Wings",
+    "Mechanical Implant", "Cybernetic Accessory", "Custom Accessory"
+  ],
+
+  accessoryLocationOptions: [
+    "Head", "Hair", "Forehead", "Eyes", "Face", "Ears", "Neck",
+    "Shoulders", "Chest", "Back", "Upper Arms", "Wrists", "Hands",
+    "Fingers", "Waist", "Legs", "Ankles", "Multiple Locations",
+    "Floating / Orbiting", "Custom Location"
+  ],
+
+  accessoryPurposeOptions: [
+    "Fashion", "Personal Expression", "Sentimental Value",
+    "Family Heirloom", "Ceremonial", "Cultural Significance",
+    "Religious Significance", "Symbol of Authority",
+    "Rank or Achievement", "Identification", "Protection",
+    "Magical Enhancement", "Power Amplification",
+    "Ability Suppression", "Power Sealing", "Curse Containment",
+    "Transformation", "Communication", "Tracking", "Concealment",
+    "Combat Utility", "Medical Support", "Technological Function",
+    "Custom Purpose"
+  ],
+
+  accessoryAbilityOptions: [
+    "None", "Protective Barrier", "Damage Reduction", "Healing",
+    "Regeneration", "Energy Storage", "Energy Amplification",
+    "Mana Regeneration", "Power Suppression", "Power Unlocking",
+    "Ability Sealing", "Curse Resistance", "Mind Protection",
+    "Soul Protection", "Illusion Generation", "Invisibility",
+    "Teleportation", "Dimensional Storage", "Communication",
+    "Detection", "Threat Warning", "Transformation", "Shape-Shifting",
+    "Flight", "Elemental Resistance", "Time Resistance",
+    "Spatial Protection", "Custom Ability"
+  ],
+
+  accessoryMaterialOptions: [
+    "Gold", "Silver", "Platinum", "Iron", "Steel", "Titanium",
+    "Obsidian", "Crystal", "Gemstone", "Diamond", "Pearl", "Glass",
+    "Wood", "Bone", "Dragon Bone", "Dragon Scale", "Leather",
+    "Fabric", "Silk", "Feathers", "Holy Material",
+    "Demonic Material", "Celestial Alloy", "Living Material",
+    "Unknown Material", "Mixed Materials", "Custom Material"
+  ]
+};

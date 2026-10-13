@@ -14,7 +14,7 @@ function Power({
     >
       <div className="mb-8">
         <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.16em] text-violet-300">
-          Step 03
+          Step 04
         </p>
 
         <h2
