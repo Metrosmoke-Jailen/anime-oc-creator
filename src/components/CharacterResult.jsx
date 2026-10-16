@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 function CharacterResult({ character, resetCharacter }) {
+  const [copyStatus, setCopyStatus] = useState("idle");
   const appearance = character.appearance ?? {};
 
   const personality = Array.isArray(character.personality)
@@ -10,6 +13,7 @@ function CharacterResult({ character, resetCharacter }) {
   const accessories = Array.isArray(character.accessories?.items)
     ? character.accessories.items
     : [];
+  const titles = Array.isArray(character.titles) ? character.titles : [];
 
   const weaponAbilities = [
     ...(Array.isArray(weapon.abilities) ? weapon.abilities : []),
@@ -37,6 +41,96 @@ function CharacterResult({ character, resetCharacter }) {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const buildPlainTextProfile = () => {
+    const lines = [
+      character.name || "Unnamed Character",
+      "=".repeat((character.name || "Unnamed Character").length),
+      "",
+      "IDENTITY",
+      `Age: ${character.age || "Not specified"}`,
+      `Gender: ${character.gender || "Not specified"}`,
+      `Species: ${character.species || "Not specified"}`,
+      `Role: ${character.role || "Not specified"}`,
+      "",
+      "PERSONALITY",
+      personality.length ? personality.join(", ") : "Not specified",
+      "",
+      "TITLES",
+      ...(titles.length
+        ? titles.map((title) => `${title.isPrimary ? "Primary: " : ""}${title.name}${title.category ? ` (${title.category})` : ""}`)
+        : ["None specified"]),
+      "",
+      "BACKSTORY",
+      character.backstory || "No backstory provided.",
+      "",
+      "POWERS",
+      `Power type: ${character.powerType || "Not specified"}`,
+      `Ability: ${character.powerName || "Not specified"}`,
+      character.powerDescription || "No power description provided.",
+      "",
+      "WEAPON",
+      `Name: ${weapon.name || "Not specified"}`,
+      `Type: ${weapon.type || "Not specified"}`,
+      `Combat style: ${weapon.combatStyle || "Not specified"}`,
+      `Origin: ${weapon.origin || "Not specified"}`,
+      `Rarity: ${weapon.rarity || "Not specified"}`,
+      `Abilities: ${weaponAbilities.length ? weaponAbilities.join(", ") : "None specified"}`,
+      weapon.description || "",
+      "",
+      "ACCESSORIES",
+      ...(accessories.length
+        ? accessories.flatMap((item, index) => [
+            `${item.name || item.type || `Accessory ${index + 1}`}${item.type ? ` (${item.type})` : ""}`,
+            ...(item.location ? [`Location: ${item.location}`] : []),
+            ...(item.purpose ? [`Purpose: ${item.purpose}`] : []),
+            ...(item.material ? [`Material: ${item.material}`] : []),
+            ...(Array.isArray(item.abilities) && item.abilities.length
+              ? [`Abilities: ${item.abilities.join(", ")}`]
+              : []),
+            ...(item.description ? [item.description] : []),
+            "",
+          ])
+        : ["None specified", ""]),
+      "APPEARANCE",
+      ...appearanceItems.filter(([, value]) => Boolean(value)).map(([label, value]) => `${label}: ${value}`),
+      appearance.distinguishingFeatures ? `Distinguishing features: ${appearance.distinguishingFeatures}` : "",
+      "",
+      "Created with Anime OC Creator",
+    ];
+
+    return lines.filter((line) => line !== undefined).join("\n");
+  };
+
+  const handleCopyProfile = async () => {
+    try {
+      await navigator.clipboard.writeText(buildPlainTextProfile());
+      setCopyStatus("copied");
+      window.setTimeout(() => setCopyStatus("idle"), 2200);
+    } catch {
+      setCopyStatus("failed");
+      window.setTimeout(() => setCopyStatus("idle"), 3000);
+    }
+  };
+
+  const handleDownloadJson = () => {
+    const blob = new Blob([JSON.stringify(character, null, 2)], {
+      type: "application/json;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const safeName = (character.name || "anime-oc")
+      .trim()
+      .replace(/[^a-z0-9-_]+/gi, "-")
+      .replace(/^-+|-+$/g, "") || "anime-oc";
+
+    link.href = url;
+    link.download = `${safeName.toLowerCase()}-character.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
   return (
@@ -124,6 +218,30 @@ function CharacterResult({ character, resetCharacter }) {
               </div>
             ) : (
               <EmptyValue text="No personality traits specified." />
+            )}
+          </ProfileSection>
+
+          {/* Titles */}
+          <ProfileSection title="Titles & Epithets" id="titles-heading">
+            {titles.length ? (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {titles.map((title, index) => (
+                  <article
+                    key={title.id ?? `${title.name}-${index}`}
+                    className="rounded-2xl border border-violet-400/15 bg-violet-500/5 p-4"
+                  >
+                    <p className="text-xs font-bold uppercase tracking-wide text-violet-300">
+                      {title.category || "Title"}{title.isPrimary ? " · Primary" : ""}
+                    </p>
+                    <h4 className="mt-1 font-bold text-white">{title.name}</h4>
+                    {title.description && (
+                      <p className="mt-2 text-sm leading-6 text-[#b8b2c8]">{title.description}</p>
+                    )}
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <EmptyValue text="No titles specified." />
             )}
           </ProfileSection>
 
@@ -316,22 +434,49 @@ function CharacterResult({ character, resetCharacter }) {
             )}
           </ProfileSection>
 
-          {/* Actions */}
-          <div className="flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row print:hidden">
-            <button
-              type="button"
-              className="inline-flex min-h-12 flex-1 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-5 text-sm font-bold text-white transition hover:bg-white/[0.07] focus-visible:outline-2 focus-visible:outline-violet-300"
-              onClick={handlePrint}
-            >
-              🖨️ Print Profile
-            </button>
 
+          <ProfileSection title="Backstory" id="backstory-heading">
+            {character.backstory?.trim() ? (
+              <p className="whitespace-pre-wrap break-words text-sm leading-7 text-[#b8b2c8]">
+                {character.backstory}
+              </p>
+            ) : (
+              <EmptyValue text="No backstory provided." />
+            )}
+          </ProfileSection>
+
+
+          {/* Actions */}
+          <div className="profile-export-panel print:hidden">
+            <div>
+              <p className="profile-export-kicker">TAKE YOUR CHARACTER WITH YOU</p>
+              <h3>Save your creation</h3>
+              <p>Copy a readable profile, download the structured character data, or print a keepsake version.</p>
+            </div>
+
+            <div className="profile-export-actions">
+              <button type="button" className="profile-export-button profile-export-primary" onClick={handleCopyProfile}>
+                {copyStatus === "copied" ? "✓ Copied to Clipboard" : copyStatus === "failed" ? "Clipboard Unavailable" : "▣ Copy Profile"}
+              </button>
+              <button type="button" className="profile-export-button" onClick={handleDownloadJson}>
+                ↓ Download JSON
+              </button>
+              <button type="button" className="profile-export-button" onClick={handlePrint}>
+                ⎙ Print Profile
+              </button>
+            </div>
+            <p className="profile-export-status" aria-live="polite">
+              {copyStatus === "copied" ? "Your character profile is ready to paste anywhere." : copyStatus === "failed" ? "Your browser blocked clipboard access. Try using Download JSON instead." : "Your character data stays in your browser unless you choose to export it."}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row print:hidden">
             <button
               type="button"
               className="inline-flex min-h-12 flex-1 items-center justify-center rounded-xl bg-gradient-to-br from-violet-300 to-violet-700 px-5 text-sm font-bold text-white shadow-lg shadow-violet-950/30 transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-violet-300"
               onClick={resetCharacter}
             >
-              ✨ Create Another
+              ✨ Create Another Character
             </button>
           </div>
         </div>

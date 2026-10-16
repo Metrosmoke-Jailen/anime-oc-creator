@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import ProgressBar from "./components/ProgressBar";
 import BasicInfo from "./components/BasicInfo";
+import Titles from "./components/Titles";
+import Backstory from "./components/Backstory";
 import Personality from "./components/Personality";
 import Power from "./components/Power";
 import Weapons from "./components/Weapons";
@@ -53,6 +55,11 @@ const initialCharacter = {
   powerType: "",
   powerName: "",
   powerDescription: "",
+
+
+  backstory: "",
+
+  titles: [],
 
   weapon: {
     type: "",
@@ -239,7 +246,7 @@ function getSavedStep() {
       localStorage.getItem(STORAGE_KEYS.step)
     );
 
-    return Number.isInteger(step) && step >= 1 && step <= 7
+    return Number.isInteger(step) && step >= 1 && step <= 9
       ? step
       : 1;
   } catch {
@@ -299,22 +306,27 @@ function App() {
 
   // Persist the character, including appearance.
   useEffect(() => {
+    let savedTimeout;
+    let statusTimeout;
+
     try {
       localStorage.setItem(
         STORAGE_KEYS.character,
         JSON.stringify(character)
       );
 
-      setIsSaved(true);
-
-      const timeout = window.setTimeout(() => {
+      savedTimeout = window.setTimeout(() => setIsSaved(true), 0);
+      statusTimeout = window.setTimeout(() => {
         setIsSaved(false);
       }, 1600);
-
-      return () => window.clearTimeout(timeout);
     } catch {
-      setIsSaved(false);
+      savedTimeout = window.setTimeout(() => setIsSaved(false), 0);
     }
+
+    return () => {
+      window.clearTimeout(savedTimeout);
+      window.clearTimeout(statusTimeout);
+    };
   }, [character]);
 
   // Persist the current step.
@@ -429,7 +441,7 @@ function App() {
     if (
       !Number.isInteger(step) ||
       step < 1 ||
-      step > 7 ||
+      step > 9 ||
       step === currentStep
     ) {
       return;
@@ -467,13 +479,13 @@ function App() {
       return;
     }
 
-    if (currentStep === 7) {
+    if (currentStep === 9) {
       generateCharacter();
       return;
     }
 
     setCurrentStep((previous) =>
-      Math.min(previous + 1, 7)
+      Math.min(previous + 1, 9)
     );
 
     setErrors({});
@@ -591,14 +603,16 @@ const newAppearance = {
   );
 
 
-const stepHeading = {
-  1: "Basic Information",  
+  const stepHeading = {
+  1: "Basic Information",
   2: "Personality",
   3: "Powers",
   4: "Weapons",
   5: "Accessories",
   6: "Appearance Creator",
-  7: "Review Your Character",
+  7: "Backstory",
+  8: "Titles",
+  9: "Review Your Character",
 }[currentStep];
 
   return (
@@ -710,7 +724,7 @@ const stepHeading = {
 
             {/* Current Step */}
             <section
-              className="mx-auto mt-8 w-full max-w-5xl sm:mt-10"
+              className="step-panel mx-auto mt-8 w-full max-w-5xl sm:mt-10"
               aria-label={stepHeading}
             >
               
@@ -760,11 +774,37 @@ const stepHeading = {
   />
 )}
 
+
 {currentStep === 7 && (
-  <Review
+  <Backstory
     character={character}
-    onEdit={goToStep}
+    updateCharacter={(field, value) => {
+      setCharacter((previous) => ({
+        ...previous,
+        [field]: value,
+      }));
+    }}
   />
+)}
+
+{currentStep === 8 && (
+  <Titles
+    character={character}
+    updateCharacter={(field, value) => {
+      setCharacter((previous) => ({
+        ...previous,
+        [field]: value,
+      }));
+    }}
+  />
+)}
+
+{currentStep === 9 && (
+              <Review
+                character={character}
+                onEdit={goToStep}
+                errors={errors}
+              />
 )}
 
               {/* Navigation Buttons */}
@@ -794,9 +834,9 @@ const stepHeading = {
                   onClick={handleNext}
                   className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-violet-600 to-violet-500 px-6 text-sm font-black text-white shadow-lg shadow-violet-950/30 transition hover:from-violet-500 hover:to-violet-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-300 active:scale-[0.98] sm:w-auto"
                 >
-                  {currentStep === 7
+                  {currentStep === 9
                     ? "⚡ Generate Character"
-                    : currentStep === 6
+                    : currentStep === 8
                       ? "Review →"
                       : "Continue →"}
                 </button>

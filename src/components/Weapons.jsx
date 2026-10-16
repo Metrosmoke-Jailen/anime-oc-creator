@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { weaponsOptions } from "../data/options";
 
@@ -57,7 +56,7 @@ export default function Weapons({ character, setCharacter }) {
   const labelClass = "mb-2 block text-sm font-semibold text-gray-700";
 
   return (
-    <section className="space-y-8">
+    <section className="weapon-studio space-y-8">
       <div>
         <p className="text-sm font-semibold uppercase tracking-widest text-purple-600">
           Character Creator / Equipment

@@ -7,6 +7,7 @@ function Review({ character, onEdit }) {
   const accessories = Array.isArray(character.accessories?.items)
     ? character.accessories.items
     : [];
+  const titles = Array.isArray(character.titles) ? character.titles : [];
 
   const appearanceItems = [
     ["Hair Color", appearance.hairColor],
@@ -39,7 +40,7 @@ function Review({ character, onEdit }) {
     >
       <div className="mb-8">
         <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.16em] text-violet-300">
-          Step 07
+          Step 09
         </p>
 
         <h2
@@ -287,6 +288,49 @@ function Review({ character, onEdit }) {
             </div>
           ) : (
             <EmptyValue text="No accessories added." />
+          )}
+        </ReviewSection>
+
+        {/* Backstory */}
+        <ReviewSection
+          eyebrow="HISTORY"
+          title="Backstory"
+          onEdit={() => onEdit(7)}
+          editLabel="Edit backstory"
+        >
+          {character.backstory?.trim() ? (
+            <DescriptionBox label="Character history" value={character.backstory} />
+          ) : (
+            <EmptyValue text="No backstory added." />
+          )}
+        </ReviewSection>
+
+        {/* Titles */}
+        <ReviewSection
+          eyebrow="HONOR & REPUTATION"
+          title="Titles & Epithets"
+          onEdit={() => onEdit(8)}
+          editLabel="Edit titles"
+        >
+          {titles.length ? (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {titles.map((title, index) => (
+                <article
+                  key={title.id ?? `${title.name}-${index}`}
+                  className="rounded-xl border border-white/10 bg-white/[0.025] p-4"
+                >
+                  <p className="text-xs font-bold uppercase tracking-wide text-violet-300">
+                    {title.category || "Title"}{title.isPrimary ? " · Primary" : ""}
+                  </p>
+                  <h4 className="mt-1 font-bold text-white">{title.name}</h4>
+                  {title.description && (
+                    <p className="mt-2 text-sm leading-6 text-white/60">{title.description}</p>
+                  )}
+                </article>
+              ))}
+            </div>
+          ) : (
+            <EmptyValue text="No titles added." />
           )}
         </ReviewSection>
 

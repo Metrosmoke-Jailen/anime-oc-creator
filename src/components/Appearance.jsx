@@ -129,7 +129,7 @@ function Appearance({
       {/* Heading */}
       <div className="mb-8">
         <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.16em] text-violet-300">
-          Step 03
+          Step 06
         </p>
 
         <h2
@@ -184,8 +184,112 @@ function Appearance({
         </div>
       </div>
 
+      {/* Quick visual palettes */}
+      <div className="appearance-studio-block">
+        <div className="appearance-studio-heading">
+          <div>
+            <p className="appearance-kicker">01 / COLOR DIRECTION</p>
+            <h3>Choose the character's palette</h3>
+            <p>Tap a swatch to instantly set the matching detail.</p>
+          </div>
+          <span className="appearance-studio-icon" aria-hidden="true">✦</span>
+        </div>
+
+        <div className="appearance-palette-group">
+          <p className="appearance-palette-label">HAIR COLOR</p>
+          <div className="appearance-swatches" role="group" aria-label="Quick hair color palette">
+            {[
+              ["Black", "#17151d"], ["White", "#f4f0ff"], ["Silver", "#aeb8ca"],
+              ["Brown", "#79513d"], ["Blonde", "#f3d36a"], ["Crimson", "#c92c50"],
+              ["Purple", "#9b6cff"], ["Blue", "#4c8dff"], ["Green", "#49c99a"]
+            ].map(([label, color]) => (
+              <button
+                type="button"
+                key={label}
+                className={`appearance-swatch ${appearance.hairColor === label ? "is-selected" : ""}`}
+                onClick={() => updateAppearance("hairColor", label)}
+                aria-label={`Set hair color to ${label}`}
+                aria-pressed={appearance.hairColor === label}
+                title={label}
+              >
+                <span style={{ background: color }} />
+                <small>{label}</small>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="appearance-palette-group">
+          <p className="appearance-palette-label">EYE COLOR</p>
+          <div className="appearance-swatches" role="group" aria-label="Quick eye color palette">
+            {[
+              ["Brown", "#8b5739"], ["Amber", "#d99435"], ["Crimson", "#d52c4c"],
+              ["Gold", "#f4ce54"], ["Emerald", "#32b985"], ["Ice Blue", "#8ce7ff"],
+              ["Violet", "#a879ff"], ["Silver", "#c8d2e6"], ["Glowing", "#fff5a6"]
+            ].map(([label, color]) => (
+              <button
+                type="button"
+                key={label}
+                className={`appearance-swatch ${appearance.eyeColor === label ? "is-selected" : ""}`}
+                onClick={() => updateAppearance("eyeColor", label)}
+                aria-label={`Set eye color to ${label}`}
+                aria-pressed={appearance.eyeColor === label}
+                title={label}
+              >
+                <span style={{ background: color }} />
+                <small>{label}</small>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Style direction cards */}
+      <div className="appearance-studio-block">
+        <div className="appearance-studio-heading">
+          <div>
+            <p className="appearance-kicker">02 / STYLE DIRECTION</p>
+            <h3>Set the visual aesthetic</h3>
+            <p>Choose a starting point, then fine-tune the details below.</p>
+          </div>
+        </div>
+        <div className="appearance-style-grid">
+          {[
+            { name: "Dark Fantasy", icon: "☾", note: "Shadowed, ornate, dramatic" },
+            { name: "Celestial", icon: "✧", note: "Radiant, ethereal, divine" },
+            { name: "Cyberpunk", icon: "⌁", note: "Neon, techwear, futuristic" },
+            { name: "High Fantasy", icon: "♜", note: "Regal, magical, legendary" },
+            { name: "Gothic", icon: "♢", note: "Elegant, moody, intricate" },
+            { name: "Classic Shonen", icon: "⚡", note: "Bold, energetic, iconic" }
+          ].map((style) => (
+            <button
+              type="button"
+              key={style.name}
+              className={`appearance-style-card ${appearance.aesthetic === style.name ? "is-selected" : ""}`}
+              onClick={() => updateAppearance("aesthetic", style.name)}
+              aria-pressed={appearance.aesthetic === style.name}
+            >
+              <span className="appearance-style-icon" aria-hidden="true">{style.icon}</span>
+              <span className="appearance-style-copy">
+                <strong>{style.name}</strong>
+                <small>{style.note}</small>
+              </span>
+              <span className="appearance-style-check" aria-hidden="true">{appearance.aesthetic === style.name ? "✓" : "+"}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Select Fields */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="appearance-studio-block appearance-detail-block">
+        <div className="appearance-studio-heading">
+          <div>
+            <p className="appearance-kicker">03 / DETAIL WORK</p>
+            <h3>Refine the design</h3>
+            <p>Dial in the silhouette, outfit, features, and finishing touches.</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         {appearanceFields.map((field) => (
           <div
             key={field.name}
@@ -222,6 +326,7 @@ function Appearance({
             </select>
           </div>
         ))}
+        </div>
       </div>
 
       {/* Distinguishing Features */}
@@ -280,12 +385,34 @@ function Appearance({
       {/* Live Summary */}
       <div className="mt-8 rounded-2xl border border-violet-400/20 bg-gradient-to-br from-violet-500/10 via-purple-500/[0.04] to-transparent p-5 sm:p-6">
         <div className="flex items-start gap-3">
-          <span
-            className="grid size-11 shrink-0 place-items-center rounded-xl border border-violet-400/20 bg-violet-500/10 text-xl"
+          <div
+            className="appearance-character-token"
             aria-hidden="true"
+            style={{
+              "--preview-hair": ({
+                Black: "#17151d", White: "#f4f0ff", Silver: "#aeb8ca", Gray: "#777887",
+                Brown: "#79513d", Blonde: "#f3d36a", "Platinum Blonde": "#f2e7c5",
+                Red: "#c92c50", Crimson: "#c92c50", Pink: "#f18bc4", Purple: "#9b6cff",
+                Blue: "#4c8dff", Cyan: "#67e8f9", Green: "#49c99a", Teal: "#2dd4bf",
+                Orange: "#f97316", Golden: "#facc15", Rainbow: "#c084fc", "Two-Tone": "#9b6cff"
+              })[appearance.hairColor] || "#262033"
+            }}
           >
-            🎨
-          </span>
+            <span className="appearance-token-hair" />
+            <span className="appearance-token-face" style={{
+              "--preview-eyes": ({
+                Black: "#17151d", Brown: "#8b5739", Amber: "#d99435", Red: "#d52c4c",
+                Crimson: "#d52c4c", Orange: "#f97316", Yellow: "#f4ce54", Gold: "#f4ce54",
+                Green: "#32b985", Emerald: "#32b985", Blue: "#4c8dff", "Ice Blue": "#8ce7ff",
+                Cyan: "#67e8f9", Purple: "#9b6cff", Violet: "#a879ff", Pink: "#f18bc4",
+                Silver: "#c8d2e6", White: "#fff", Glowing: "#fff5a6"
+              })[appearance.eyeColor] || "#2a163b"
+            }}>
+              <i />
+              <i />
+            </span>
+            <span className="appearance-token-collar" />
+          </div>
 
           <div className="min-w-0 flex-1">
             <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-violet-300">
@@ -295,6 +422,11 @@ function Appearance({
             <h3 className="mt-1 text-lg font-bold text-white">
               {character.name?.trim() || "Your Character"}
             </h3>
+            <div className="appearance-preview-tags">
+              {[appearance.aesthetic, appearance.outfit, appearance.hairColor && `${appearance.hairColor} hair`].filter(Boolean).map((tag) => (
+                <span key={tag}>{tag}</span>
+              ))}
+            </div>
 
             {appearanceDescription.length > 0 ? (
               <p className="mt-3 break-words text-sm leading-7 text-[#c7c0d5]">

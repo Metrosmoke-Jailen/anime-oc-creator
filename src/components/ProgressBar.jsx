@@ -1,106 +1,115 @@
 
+const steps = [
+  { label: "Basic Info", icon: "✦", description: "Define identity" },
+  { label: "Personality", icon: "☯", description: "Shape character" },
+  { label: "Powers", icon: "⚡", description: "Choose abilities" },
+  { label: "Weapons", icon: "⚔", description: "Select weaponry" },
+  { label: "Accessories", icon: "◇", description: "Add details" },
+  { label: "Appearance", icon: "◈", description: "Design the look" },
+  { label: "Backstory", icon: "📜", description: "Write their history" },
+  { label: "Titles", icon: "👑", description: "Forge a legend" },
+  { label: "Review", icon: "✧", description: "Finalize character" },
+];
+
 function ProgressBar({ currentStep, goToStep }) {
-  const steps = [
-    { label: "Basic Info", icon: "📝" },
-    { label: "Personality", icon: "🎭" },
-    { label: "Powers", icon: "🔥" },
-    { label: "Weapons", icon: "⚔️" },
-    { label: "Accessories", icon: "💍" },
-    { label: "Appearance", icon: "👁️" },
-    { label: "Review", icon: "📋" },
-  ];
+  const progress =
+    ((currentStep - 1) / (steps.length - 1)) * 100;
 
   return (
     <nav
-      className="mb-10 w-full"
-      aria-label="Character creation progress"
+      className="journey-progress"
+      aria-label="Character creation steps"
     >
-      <ol className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7 lg:gap-3">
+      <div className="journey-heading">
+        <div>
+          <p className="journey-eyebrow">
+            YOUR CREATION JOURNEY
+          </p>
+
+          <h2 className="journey-title">
+            Forge Your Character
+          </h2>
+        </div>
+
+        <div className="journey-counter" aria-live="polite">
+          <span className="journey-counter-current">
+            {String(currentStep).padStart(2, "0")}
+          </span>
+
+          <span className="journey-counter-divider">/</span>
+
+          <span>{String(steps.length).padStart(2, "0")}</span>
+        </div>
+      </div>
+
+      <div className="journey-track" aria-hidden="true">
+        <div
+          className="journey-track-fill"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      <ol className="journey-steps">
         {steps.map((step, index) => {
           const stepNumber = index + 1;
           const isActive = currentStep === stepNumber;
           const isCompleted = currentStep > stepNumber;
-          const canNavigate = stepNumber < currentStep;
 
           return (
-            <li key={step.label} className="min-w-0">
+            <li
+              key={step.label}
+              className={[
+                "journey-step",
+                isActive ? "is-active" : "",
+                isCompleted ? "is-completed" : "",
+                !isActive && !isCompleted
+                  ? "is-upcoming"
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
               <button
                 type="button"
-                onClick={() => goToStep(stepNumber)}
-                disabled={!canNavigate}
+                className="journey-step-button"
+                onClick={() => {
+                  if (isCompleted) {
+                    goToStep(stepNumber);
+                  }
+                }}
+                disabled={!isCompleted}
                 aria-current={isActive ? "step" : undefined}
                 aria-label={`Step ${stepNumber}: ${step.label}${
-                  isCompleted
-                    ? ", completed and editable"
-                    : isActive
-                      ? ", current step"
-                      : ", not yet available"
+                  isActive
+                    ? ", current step"
+                    : isCompleted
+                      ? ", completed, click to edit"
+                      : ", upcoming"
                 }`}
-                className={`
-                  flex min-h-24 w-full min-w-0 flex-col
-                  items-center justify-center gap-2
-                  rounded-xl border px-2 py-3 text-center
-                  transition-colors duration-200
-                  focus-visible:outline-2
-                  focus-visible:outline-offset-2
-                  focus-visible:outline-violet-300
-
-                  ${
-                    isActive
-                      ? "border-violet-400/50 bg-violet-500/15 text-white shadow-lg shadow-violet-950/20"
-                      : isCompleted
-                        ? "border-violet-400/20 bg-violet-500/5 text-violet-200 hover:border-violet-400/40 hover:bg-violet-500/10"
-                        : "border-white/10 bg-white/[0.02] text-white/35"
-                  }
-
-                  ${
-                    canNavigate
-                      ? "cursor-pointer"
-                      : "cursor-default"
-                  }
-                `}
               >
                 <span
+                  className="journey-step-icon"
                   aria-hidden="true"
-                  className="text-lg"
                 >
                   {isCompleted ? "✓" : step.icon}
                 </span>
 
-                <span
-                  aria-hidden="true"
-                  className={`
-                    grid size-7 shrink-0 place-items-center
-                    rounded-full border text-xs font-black
-                    sm:size-8
+                <span className="journey-step-copy">
+                  <span className="journey-step-number">
+                    STEP {String(stepNumber).padStart(2, "0")}
+                  </span>
 
-                    ${
-                      isActive
-                        ? "border-violet-300 bg-violet-500 text-white"
-                        : isCompleted
-                          ? "border-violet-400/40 bg-violet-500/20 text-violet-200"
-                          : "border-white/15 bg-white/5 text-white/40"
-                    }
-                  `}
-                >
-                  {isCompleted ? "✓" : stepNumber}
-                </span>
+                  <span className="journey-step-label">
+                    {step.label}
+                  </span>
 
-                <span
-                  className={`
-                    max-w-full break-words text-[10px]
-                    font-bold leading-tight sm:text-xs
-
-                    ${
-                      isActive
-                        ? "text-white"
-                        : isCompleted
-                          ? "text-violet-200"
-                          : "text-white/40"
-                    }
-                  `}
-                >
-                  {step.label}
+                  <span className="journey-step-description">
+                    {isActive
+                      ? "You are here"
+                      : isCompleted
+                        ? "Completed"
+                        : step.description}
+                  </span>
                 </span>
               </button>
             </li>
@@ -108,36 +117,12 @@ function ProgressBar({ currentStep, goToStep }) {
         })}
       </ol>
 
-      <div className="mt-4 text-center">
-        <p
-          className="text-sm font-semibold text-white/60"
-          aria-live="polite"
-        >
-          Step {currentStep} of {steps.length}
-        </p>
-
-        <div
-          className="mx-auto mt-3 h-1.5 max-w-md overflow-hidden rounded-full bg-white/10"
-          role="progressbar"
-          aria-valuenow={currentStep}
-          aria-valuemin={1}
-          aria-valuemax={steps.length}
-          aria-label={`Creation progress: step ${currentStep} of ${steps.length}`}
-        >
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-violet-600 via-violet-500 to-fuchsia-400 transition-all duration-500"
-            style={{
-              width: `${(currentStep / steps.length) * 100}%`,
-            }}
-          />
-        </div>
-
-        {currentStep > 1 && (
-          <p className="mt-2 text-xs text-white/35">
-            ✓ Previous steps can be clicked to edit
-          </p>
-        )}
-      </div>
+      <p className="journey-hint">
+        <span aria-hidden="true">✦</span>
+        {currentStep === steps.length
+          ? "The final chapter. Review your character before generating."
+          : "Every choice brings your original character to life."}
+      </p>
     </nav>
   );
 }

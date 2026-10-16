@@ -317,6 +317,34 @@ function BasicInfo({
           </select>
         </div>
       </div>
+
+      <div className="identity-preview" aria-live="polite">
+        <div className="identity-preview-symbol" aria-hidden="true">
+          ✧
+        </div>
+
+        <div className="identity-preview-content">
+          <p className="identity-preview-eyebrow">
+            CHARACTER IDENTITY
+          </p>
+
+          <h3>
+            {character.name.trim() || "Unnamed Character"}
+          </h3>
+
+          <div className="identity-preview-tags">
+            {character.species && <span>{character.species}</span>}
+            {character.role && <span>{character.role}</span>}
+            {character.age && <span>Age {character.age}</span>}
+          </div>
+
+          <p className="identity-preview-note">
+            {character.gender
+              ? `${character.gender} · The beginning of a new legend.`
+              : "Your character's story begins with a name."}
+          </p>
+        </div>
+      </div>
     </section>
   );
 }

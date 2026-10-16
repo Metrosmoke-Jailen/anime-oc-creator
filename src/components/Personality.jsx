@@ -67,15 +67,14 @@ function Personality({
           best describe your character.
         </p>
 
-        <p
-          className="mt-4 text-sm text-[#817a91]"
-          aria-live="polite"
-        >
-          <strong className="text-white">
-            {selectedTraits.length} / 5
-          </strong>{" "}
-          traits selected
-        </p>
+<p className="trait-counter" aria-live="polite">
+  <strong>{selectedTraits.length} / 5</strong>
+  {selectedTraits.length < 3
+    ? ` · Select ${3 - selectedTraits.length} more to continue`
+    : selectedTraits.length === 5
+      ? " · Selection complete!"
+      : " · Minimum reached"}
+</p>
       </div>
 
       <fieldset>

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { accessoryOptions } from "../data/options";
 
@@ -125,7 +124,7 @@ export default function Accessories({ character, setCharacter }) {
   const labelClass = "mb-2 block text-sm font-semibold text-gray-700";
 
   return (
-    <section className="space-y-8">
+    <section className="accessory-studio space-y-8">
       {/* Header */}
       <div>
         <p className="text-sm font-semibold uppercase tracking-widest text-pink-600">
@@ -394,6 +393,39 @@ export default function Accessories({ character, setCharacter }) {
                 </label>
               );
             })}
+          </div>
+        </div>
+
+        {/* Custom Ability */}
+        <div>
+          <label htmlFor="accessory-custom-ability" className={labelClass}>
+            Custom Special Property
+          </label>
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <input
+              id="accessory-custom-ability"
+              type="text"
+              value={customAbility}
+              onChange={(event) => setCustomAbility(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  addCustomAbility();
+                }
+              }}
+              maxLength={80}
+              placeholder="e.g. Stores a memory inside the crystal"
+              className={inputClass}
+            />
+            <button
+              type="button"
+              onClick={addCustomAbility}
+              disabled={!customAbility.trim()}
+              className="min-h-12 shrink-0 rounded-xl border border-pink-300/25 bg-pink-500/10 px-5 text-sm font-bold text-pink-100 transition hover:bg-pink-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Add Property
+            </button>
           </div>
         </div>
 
