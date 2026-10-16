@@ -10,6 +10,8 @@ A responsive React app that lets users create their own original anime character
 
 - Create a custom anime character
 - Choose personality traits and powers
+- Create an appearance, weapon and accessory
+- Generate a backstory and title
 - Review character information before generating
 - Random character generator
 - Auto-save with LocalStorage
