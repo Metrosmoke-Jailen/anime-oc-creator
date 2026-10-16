@@ -13,14 +13,7 @@ import Appearance from "./components/Appearance";
 import Review from "./components/Review";
 import CharacterResult from "./components/CharacterResult";
 
-import {
-  genderOptions,
-  speciesOptions,
-  roleOptions,
-  personalityOptions,
-  powerTypeOptions,
-  appearanceOptions,
-} from "./data/options";
+import { generateRandomCharacter } from "./data/generateCharacter";
 
 const STORAGE_KEYS = {
   character: "animeOCCharacter",
@@ -85,73 +78,6 @@ const initialCharacter = {
     },
   },
 };
-
-const randomNames = [
-  "Kael Vanth",
-  "Aeris Nocturne",
-  "Riven Kuro",
-  "Liora Veyne",
-  "Ren Ashvale",
-  "Sora Nightfall",
-  "Aiden Cross",
-  "Mira Valen",
-  "Lucian Veyre",
-  "Akira Kurogane",
-  "Rai Vex",
-  "Seraphina Vale",
-  "Darius Crowe",
-  "Nyx Arclight",
-  "Cassian Noir",
-  "Elara Voss",
-  "Zane Evernight",
-  "Lyra Solenne",
-  "Orion Draven",
-  "Kaien Shiro",
-  "Reina Astra",
-  "Veyra Lunaris",
-  "Ronan Blackwell",
-  "Astra Veyne",
-  "Kieran Ash",
-  "Selene Noctis",
-  "Dante Ravencroft",
-  "Aria Nightshade",
-  "Zephyr Vale",
-  "Elias Storm"
-];
-
-const randomPowerNames = [
-  "Shadow Dominion",
-  "Astral Rupture",
-  "Void Pulse",
-  "Eclipse Drive",
-  "Crimson Resonance",
-  "Celestial Breaker",
-  "Phantom Arsenal",
-  "Infinite Flame",
-  "Abyssal Crown",
-  "Heaven's Judgment",
-  "Voidwalker",
-  "Soul Requiem",
-  "Dragon's Wrath",
-  "Starfall Genesis",
-  "Reality Breaker",
-  "Temporal Collapse",
-  "Chaos Manifest",
-  "Eternal Frost",
-  "Divine Thunder",
-  "Blood Moon",
-  "Phantom Step",
-  "World Ender",
-  "Astral Dominion",
-  "Nightmare Engine",
-  "Celestial Ruin",
-  "Infinite Edge",
-  "Black Sun",
-  "Heavenly Spear",
-  "Void Genesis",
-  "Eternal Eclipse"
-];
-
 
 function createInitialCharacter() {
   return {
@@ -263,29 +189,6 @@ function getSavedGenerated() {
   } catch {
     return false;
   }
-}
-
-function randomItem(array) {
-  return array[
-    Math.floor(Math.random() * array.length)
-  ];
-}
-
-function randomItems(array, amount) {
-  const shuffled = [...array];
-
-  for (let index = shuffled.length - 1; index > 0; index--) {
-    const swapIndex = Math.floor(
-      Math.random() * (index + 1)
-    );
-
-    [shuffled[index], shuffled[swapIndex]] = [
-      shuffled[swapIndex],
-      shuffled[index]
-    ];
-  }
-
-  return shuffled.slice(0, amount);
 }
 
 function App() {
@@ -531,6 +434,10 @@ function App() {
     character.powerDescription.trim() ||
     character.weapon?.name?.trim() ||
     character.accessories?.items?.length ||
+    character.accessories?.current?.name?.trim() ||
+    character.backstory?.trim() ||
+    character.titles?.length ||
+    character.weapon?.type ||
     Object.values(character.appearance ?? {}).some(
       (value) => typeof value === "string" && value.trim()
     )
@@ -547,33 +454,9 @@ function App() {
       }
     }
       
-const newAppearance = {
-  hairColor: randomItem(appearanceOptions.hairColorOptions),
-  hairStyle: randomItem(appearanceOptions.hairStyleOptions),
-  eyeColor: randomItem(appearanceOptions.eyeColorOptions),
-  eyeStyle: randomItem(appearanceOptions.eyeStyleOptions),
-  skinTone: randomItem(appearanceOptions.skinToneOptions),
-  height: randomItem(appearanceOptions.heightOptions),
-  build: randomItem(appearanceOptions.buildOptions),
-  outfit: randomItem(appearanceOptions.outfitOptions),
-  accessories: randomItem(appearanceOptions.accessoryOptions),
-  aesthetic: randomItem(appearanceOptions.aestheticOptions),
-  distinguishingFeatures: "",
-    };
-
     setCharacter({
       ...createInitialCharacter(),
-      name: randomItem(randomNames),
-      age: String(Math.floor(Math.random() * 20) + 16),
-      gender: randomItem(genderOptions.slice(0, 2)),
-      species: randomItem(speciesOptions),
-      role: randomItem(roleOptions),
-      personality: randomItems(personalityOptions, 3),
-      appearance: newAppearance,
-      powerType: randomItem(powerTypeOptions),
-      powerName: randomItem(randomPowerNames),
-      powerDescription:
-        "The user channels their energy through a unique supernatural ability, creating powerful offensive and defensive techniques that adapt to the situation."
+      ...generateRandomCharacter(),
     });
 
     setCurrentStep(1);
@@ -626,36 +509,59 @@ const newAppearance = {
         {!isGenerated ? (
           <>
             {/* Introduction */}
-            <section className="flex flex-col gap-6 py-8 md:flex-row md:items-end md:justify-between md:gap-12 lg:py-10">
-              <div className="min-w-0 max-w-3xl">
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-violet-300">
-                  ANIME OC CREATOR
+            <section className="home-hero">
+              <div className="home-hero-copy">
+                <div className="home-hero-kicker"><span /> YOUR WORLD. YOUR HERO.</div>
+                <h1>Every great story<br /><span>starts with a character.</span></h1>
+                <p className="home-hero-description">
+                  Shape an original anime character from first spark to final detail. Choose their power, style, history, and the choices that make them yours.
                 </p>
-
-                <h1 className="mt-2 text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
-                  Create Your Original Character
-                </h1>
-
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-white/55 sm:text-base sm:leading-7">
-                  Build your character from the ground up.
-                  Define their identity, personality, appearance,
-                  powers, and role.
-                </p>
+                <div className="home-hero-actions">
+                  <button
+                    type="button"
+                    className="home-start-button"
+                    onClick={() => document.querySelector(".step-panel")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                  >
+                    Begin your character <span aria-hidden="true">↓</span>
+                  </button>
+                  <span className="home-hero-note">9 steps · autosaves as you go</span>
+                </div>
               </div>
 
+              <div className="home-hero-side">
+                <div className="home-orbit-art" aria-hidden="true">
+                  <span className="home-orbit home-orbit-one" />
+                  <span className="home-orbit home-orbit-two" />
+                  <span className="home-orbit-core">✦</span>
+                  <span className="home-orbit-dot" />
+                  <span className="home-orbit-spark">✧</span>
+                </div>
+                <div className="home-hero-card">
+                  <div className="home-hero-card-top"><span>CHARACTER WORKSHOP</span><span className="home-live-dot">● LIVE</span></div>
+                  <p>Your next story<br />is waiting to be made.</p>
+                  <div className="home-hero-card-tags"><span>✦ Identity</span><span>◈ Powers</span><span>✧ Story</span></div>
+                </div>
+              </div>
+            </section>
+
+            <section className="home-action-row" aria-label="Character creation actions">
+              <div className="home-action-copy">
+                <span className="home-action-icon" aria-hidden="true">✧</span>
+                <span><strong>Need a spark?</strong><small>Start with a complete themed character, then make it your own.</small></span>
+              </div>
               <div className="w-full shrink-0 md:w-auto">
                 <button
                   type="button"
                   onClick={randomizeCharacter}
                   aria-label="Randomize character"
-                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-violet-400/25 bg-violet-500/10 px-5 text-sm font-bold text-violet-100 transition hover:border-violet-400/50 hover:bg-violet-500/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-300 md:w-auto"
+                  className="random-character-button inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-bold text-violet-100 md:w-auto"
                 >
-                  <span aria-hidden="true">🎲</span>
-                  Randomize Character
+                  <span className="random-character-button-icon" aria-hidden="true">✦</span>
+                  <span>Randomize Character</span>
                 </button>
 
                 <p className="mt-2 text-center text-xs text-white/35 md:text-right">
-                  Generates a completely new character.
+                  Builds a themed character with a look, story, power, and gear.
                 </p>
 
                 {isSaved && (
